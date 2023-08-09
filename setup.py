@@ -6,7 +6,7 @@ setup(
     description='A API Client for fommunicating with the Bunni accounting software',
     url='https://github.com/sme4gle/pyBunniApi',
     author='Mickael van Schie',
-
+    author_email='mickael.v.s.19@hotmail.com',
     package_data={
         "pyBunniApi": ["py.typed"],
     },
