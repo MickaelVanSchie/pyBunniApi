@@ -9,7 +9,7 @@
 ### Installation ###
 
 ```shell
-$ pip install https://github.com/sme4gle/pyBunniApi-master
+$ pip install pyBunniApi
 ```
 
 ### Getting started with pyBunniApi ###
