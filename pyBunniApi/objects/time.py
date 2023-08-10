@@ -18,7 +18,6 @@ class TimeObject:
 
     def __init__(
             self,
-            id: str | None,
             date: str,
             duration: Duration,
             description: str,
@@ -41,7 +40,6 @@ class TimeObject:
                 "description": self.description,
                 "externalId": self.external_id,
                 "project": {
-                    'Id': self.id,
                     "externalId": self.project["external_id"],
                     "color": self.project["color"],
                     "name": self.project["name"],

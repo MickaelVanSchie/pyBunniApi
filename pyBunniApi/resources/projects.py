@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from pyBunniApi import PyBunniApi
+    from pyBunniApi.client import Client
 
 
 class Projects:
-    def __init__(self, bunni_api: "PyBunniApi"):
+    def __init__(self, bunni_api: "Client"):
         self.bunni_api = bunni_api
 
     def list(self) -> list[dict[str, Any]] | dict[str, Any]:

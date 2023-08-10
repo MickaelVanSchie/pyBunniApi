@@ -87,7 +87,6 @@ def test_time_object():
         name='Berry the Bunny'
     )
     time_object = TimeObject(
-        id='tr_XXXX',
         date='2023-08-01',
         duration=duration,
         description='some description string here',

@@ -17,15 +17,15 @@ ___
 Let's start with importing the API Client
 
 ```python
-from pyBunniApi import PyBunniApi
+from pyBunniApi.client import Client
 ```
 
 Once this is done we have to initialize it.
 
 ```python
-pyBunniApi = PyBunniApi()
-pyBunniApi.set_api_key('YOUR API KEY HERE')
-pyBunniApi.set_business_id('YOUR BUSINESS ID HERE')
+py_bunni_api = Client()
+py_bunni_api.set_api_key('YOUR API KEY HERE')
+py_bunni_api.set_business_id('YOUR BUSINESS ID HERE')
 ```
 
 ### Receiving the contacts list ###
@@ -33,7 +33,7 @@ ___
 If your API key has access to 'READ' on the specific parts of contacts, we can use `contacts.list` to view all contacts.
 
 ```python
-contacts = pyBunniApi.contacts.list()
+contacts = py_bunni_api.contacts.list()
 ```
 
 This will return a list of contacts. The response looks like this:
@@ -66,7 +66,7 @@ If your API key has access to 'READ' on the invoices section, we can use `invoic
 invoices.
 
 ```python
-invoice_list = pyBunniApi.invoices.list()
+invoice_list = py_bunni_api.invoices.list()
 ```
 
 This will return a list with all invoices, the response looks like this:
@@ -144,12 +144,12 @@ invoice = PyBunniApi.Invoice(
 ```
 
 We now have a initialized `Invoice` object which we can use to create a invoice (pdf) in Bunni.
-We can do this by using `pyBunniApi.invoices.create`
+We can do this by using `py_bunni_api.invoices.create`
 
 A complete snippet of this code would look like this:
 
 ```python
-invoice_pdf = pyBunniApi.invoices.create(invoice)
+invoice_pdf = py_bunni_api.invoices.create(invoice)
 ```
 
 This will return a single pdf url, so the expected response should look like this:
@@ -164,7 +164,7 @@ For retrieving a list of invoice designs you can use `invoice_designs.list`
 A complete snippet of this code would look like this:
 
 ```python
-invoice_designs = pyBunniApi.invoice_designs.list()
+invoice_designs = py_bunni_api.invoice_designs.list()
 ```
 
 The variable `invoice_designs` now looks like this:
@@ -190,7 +190,7 @@ For retrieving a list of projects we can use `projects.list`.
 A complete snippet looks like this:
 
 ```python
-projects = pyBunniApi.projects.list()
+projects = py_bunni_api.projects.list()
 ```
 
 The variable `projects` should now contain a JSON structure like this:
@@ -211,7 +211,7 @@ ___
 For retrieving a list of time objects we can use `time.list`. A complete snippet would look like this:
 
 ```python
-time_list = pyBunniApi.time.list()
+time_list = py_bunni_api.time.list()
 ```
 
 As a result of this piece of code time_list should contain an object which looks alot like this:
@@ -273,7 +273,7 @@ time = PyBunniApi.TimeObject(
 ```
 Now that we have created all key elements we can submit it to Bunni in the following manner:
 ```python
-pyBunniApi.time.create_or_update(time)
+py_bunni_api.time.create_or_update(time)
 ```
 
 

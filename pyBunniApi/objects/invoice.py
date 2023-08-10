@@ -12,7 +12,7 @@ class Invoice:
     contact: Contact
     rows: list[Row]
 
-    def __init__(self, invoice_date: str, tax_mode: str, design: str, contact: Contact, rows: list[Row], invoice_number=str | None):
+    def __init__(self, invoice_date: str, tax_mode: str, design: str, contact: Contact, rows: list[Row], invoice_number:str):
         """
         Parameters:
         invoice_date(str): Invoice Date in YYYY-MM-DD format.
