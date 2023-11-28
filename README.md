@@ -28,6 +28,13 @@ py_bunni_api.set_api_key('YOUR API KEY HERE')
 py_bunni_api.set_business_id('YOUR BUSINESS ID HERE')
 ```
 
+Optionally you can select if you want to receive all responses in a typed, or a flat dict. You can set this parameter with the following code:
+
+```python
+py_bunni_api.use_typing(True)
+```
+The default value of this parameter is `True`
+
 ### Receiving the contacts list ###
 ___
 If your API key has access to 'READ' on the specific parts of contacts, we can use `contacts.list` to view all contacts.
