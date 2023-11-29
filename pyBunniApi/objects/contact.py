@@ -1,99 +1,85 @@
-import json
-from typing import Any
-
-from ..objects.contact import Contact
-from ..objects.row import Row
+from typing import List
 
 
-class InvoicePDF:
-    id: str
-    invoice_date: str
-    invoice_number: str
-    tax_mode: str
-    design: dict[str, str]
-    contact: Contact | dict[str, Any]
-    rows: list[Row]
+class Field:
+    def __init__(self, label: str, value: str):
+        self.label = label
+        self.value = value
 
+    label: str
+    value: str
+
+
+class Contact:
     def __init__(
             self,
-            invoice_date: str,
-            invoice_number: str,
-            tax_mode: str,
-            design: str,
-            rows: list[Row],
-            contact: dict | Contact,
-            id: str
+            street: str,
+            streetNumber: str,
+            postalCode: str,
+            city: str,
+            color: str | None = None,
+            fields: dict | None = None,
+            id: str | None = None,
+            attn: str | None = None,
+            companyName: str | None = None,
+            toTheAttentionOf: str | None = None,
+            phoneNumber: str | None = None,
+            vatIdentificationNumber: str | None = None,
+            chamberOfCommerceNumber: str | None = None,
+            emailAddresses: list[str] | None = None,
     ):
         self.id = id
-        self.invoice_date = invoice_date
-        self.invoice_number = invoice_number
-        self.tax_mode = tax_mode
-        self.design = {"id": design}
-        self.rows = [Row(**row) for row in rows]
-        if type(contact) == Contact:
-            self.contact = contact
-        else:
-            self.contact = Contact(**contact)
+        self.company_name = companyName
+        self.attn = toTheAttentionOf or companyName or attn
+        self.street = street
+        self.street_number = streetNumber
+        self.postal_code = postalCode
+        self.city = city
+        self.phone_number = phoneNumber
+        self.vat_identification_number = vatIdentificationNumber
+        self.chamber_of_commerce_number = chamberOfCommerceNumber
+        self.email_addresses = emailAddresses
+        self.color = color
+        self.fields = [Field(**fi) for fi in fields] if fields else None
 
-    def as_json(self) -> str:
-        row_list = []
-
-        for row in self.rows:
-            row_list.append(
-                {'unitPrice': row['unit_price'], 'description': row['description'], 'quantity': row['quantity'],
-                 'tax': {'id': row['tax']}}
-            )
-
-        return json.dumps(
-            {
-                'id': self.id,
-                'invoiceDate': self.invoice_date,
-                'invoiceNumber': self.invoice_number,
-                'rows': row_list,
-                'taxMode': self.tax_mode,
-                'design': self.design,
-                'contact': self.contact.pdf_contact()
-            }
-        )
-
-
-class Invoice:
     id: str
-    invoice_date: str
-    invoice_number: str
-    is_finalized: bool
-    due_period_days: int
-    rows: list[Row]
-    pdf_url: str
+    company_name: str
+    attn: str
+    street: str
+    street_number: str  # This is a string because this number can contain additions. eg 11c.
+    postal_code: str
+    city: str
+    phone_number: str
+    vat_identification_number: str
+    chamber_of_commerce_number: str
+    email_addresses = List[str]
+    color: str
+    fields: List[Field]
 
-    def __init__(
-            self,
-            id: str,
-            invoiceDate: str,
-            rows: list[Row],
-            invoiceNumber: str,
-            isFinalized: bool,
-            duePeriodDays: int,
-            pdfUrl: str,
-            contact: Contact | dict,
-    ):
-        """
-        Parameters:
-        id(str): Invoice Id like Bunni refers to it.
-        invoiceDate(str): Invoice Date in YYYY-MM-DD format.
-        rows(list[Row]): A list of rows.
-        invoiceNumber(str): Your invoice number, can be any format.
-        duePeriodDays(int): A integer which represents the due date in days.
-        pdfUrl(str): location of the PDF stored on Bunni's servers.
-        """
-        self.id = id
-        self.invoice_date = invoiceDate
-        self.invoice_number = invoiceNumber
-        self.rows = rows
-        self.is_finalized = isFinalized
-        self.due_period_days = duePeriodDays
-        self.pdf_url = pdfUrl
-        if type(contact) == Contact:
-            self.contact = contact
-        else:
-            self.contact = Contact(**contact)
+    def pdf_contact(self) -> dict:
+        return {
+            "companyName": self.company_name,
+            "attn": self.attn,
+            "street": self.street,
+            "streetNumber": self.street_number,
+            "postalCode": self.postal_code,
+            "city": self.city,
+            "phoneNumber": self.phone_number,
+        }
+
+    def as_dict(self) -> dict:
+        return {
+            'id': self.id,
+            'company_name': self.company_name,
+            'attn': self.attn,
+            'street': self.street,
+            'street_number': self.street_number,
+            'postal_code': self.postal_code,
+            'city': self.city,
+            'phone_number': self.phone_number,
+            'vat_identification_number': self.vat_identification_number,
+            'chamber_of_commerce_number': self.chamber_of_commerce_number,
+            'email_addresses': self.email_addresses,
+            'color': self.color,
+            'fields': self.fields,
+        }
