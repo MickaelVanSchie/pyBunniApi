@@ -1,34 +1,36 @@
 import json
-from typing import TypedDict
+from typing import TypedDict, Optional
 
 from ..objects.project import Project
 
 
-class Duration(TypedDict):
+class Duration:
+    def __init__(self, duration: dict):
+        self.h = duration.get("h", 0)
+        self.m = duration.get("m", 0)
     h: int
     m: int
 
 
 class TimeObject:
+    id: str
     date: str
     duration: Duration
     description: str
-    external_id: str | None
     project: Project
 
     def __init__(
             self,
+            id: str,
             date: str,
-            duration: Duration,
+            duration: dict,
             description: str,
-            external_id: str | None,
             project: Project
     ):
         self.id = id
         self.date = date
-        self.duration = duration
+        self.duration = Duration(duration)
         self.description = description
-        self.external_id = external_id
         self.project = project
 
     def as_json(self):
@@ -38,7 +40,6 @@ class TimeObject:
                 "date": self.date,
                 "duration": {"h": self.duration["h"], "m": self.duration["m"]},
                 "description": self.description,
-                "externalId": self.external_id,
                 "project": {
                     "externalId": self.project["external_id"],
                     "color": self.project["color"],

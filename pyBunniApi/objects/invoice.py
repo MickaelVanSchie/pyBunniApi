@@ -5,8 +5,11 @@ from ..objects.row import Row
 
 
 class Invoice:
+    id: str
     invoice_date: str
     invoice_number: str
+    is_finalized: bool
+    due_period_days: int
     tax_mode: str
     design: str
     contact: Contact
