@@ -1,8 +1,9 @@
-from typing import TypedDict
+class Project:
+    def __init__(self, id: str, color: str, name: str):
+        self.id = id
+        self.color = color
+        self.name = name
 
-
-class Project(TypedDict):
     id: str | None
-    external_id: str | None
     color: str
     name: str

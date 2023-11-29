@@ -4,6 +4,7 @@ from typing import Any
 import requests
 
 from .error import BunniApiSetupException, BunniApiException
+from .resources import BankAccounts
 from .resources import Contacts
 from .resources import InvoiceDesigns
 from .resources import Invoices
@@ -17,7 +18,10 @@ class Client:
     BUSINESS_ID: str = ""
     API_URL: str = f"https://api.bunni.nl/{API_VERSION}/{BUSINESS_ID}"
     HEADER: dict[str, Any] = {}
+    TYPED: bool = True
     _client = requests.session()
+    from .objects.invoicedesign import InvoiceDesign  # noqa: E402
+    from .objects.bankaccount import BankAccount  # noqa: E402
     from .objects.contact import Contact  # noqa: E402
     from .objects.invoice import Invoice  # noqa: E402
     from .objects.project import Project  # noqa: E402
@@ -26,11 +30,15 @@ class Client:
 
     # Create endpoints
     def __init__(self):
+        self.bank_accounts = BankAccounts(self)
         self.contacts = Contacts(self)
         self.invoice_designs = InvoiceDesigns(self)
         self.invoices = Invoices(self)
         self.projects = Projects(self)
         self.time = Time(self)
+
+    def use_typing(self, typed: bool) -> None:
+        self.TYPED = typed
 
     def set_api_key(self, api_key: str) -> None:
         self.API_KEY = api_key
