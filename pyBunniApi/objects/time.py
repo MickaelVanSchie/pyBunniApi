@@ -1,5 +1,4 @@
 import json
-from typing import TypedDict, Optional
 
 from ..objects.project import Project
 

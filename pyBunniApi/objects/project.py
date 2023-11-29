@@ -1,6 +1,3 @@
-from typing import TypedDict
-
-
 class Project:
     def __init__(self, id: str, color: str, name: str):
         self.id = id

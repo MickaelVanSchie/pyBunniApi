@@ -1,4 +1,4 @@
-from typing import TypedDict, List
+from typing import List
 
 
 class Field:
@@ -13,7 +13,6 @@ class Field:
 class Contact:
     def __init__(
             self,
-            id: str,
             companyName: str,
             toTheAttentionOf: str,
             street: str,
@@ -25,7 +24,9 @@ class Contact:
             chamberOfCommerceNumber: str,
             emailAddresses: list[str],
             color,
-            fields):
+            fields,
+            id: str | None = None,
+    ):
         self.id = id
         self.company_name = companyName
         self.attn = toTheAttentionOf or companyName
@@ -53,3 +54,14 @@ class Contact:
     email_addresses = List[str]
     color: str
     fields: List[Field]
+
+    def pdf_contact(self) -> dict:
+        return {
+            "companyName": self.company_name,
+            "attn": self.attn,
+            "street": self.street,
+            "streetNumber": self.street_number,
+            "postalCode": self.postal_code,
+            "city": self.city,
+            "phoneNumber": self.phone_number,
+        }

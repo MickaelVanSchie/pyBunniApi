@@ -1,5 +1,3 @@
-
-
 class InvoiceDesign:
     def __init__(self, id: str, name: str, createdOn: str):
         self.id = id
