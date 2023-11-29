@@ -69,7 +69,8 @@ def test_invoice_object():
         duePeriodDays=14,
         id="SomeFakeId",
         isFinalized=False,
-        pdfUrl="https:www.pdf.com/"
+        pdfUrl="https:www.pdf.com/",
+        contact=contact
     )
 
     assert invoice
