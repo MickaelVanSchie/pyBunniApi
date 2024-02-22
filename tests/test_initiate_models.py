@@ -1,5 +1,5 @@
 from pyBunniApi.objects.time import Duration, TimeObject
-from pyBunniApi.objects.invoice import Invoice
+from pyBunniApi.objects.invoice import Invoice, InvoiceDesign
 from pyBunniApi.objects.row import Row
 from pyBunniApi.objects.project import Project
 from pyBunniApi.objects.contact import Contact
@@ -62,6 +62,12 @@ def test_invoice_object():
         quantity=5,
         tax='NL_High21',
     )
+    design = InvoiceDesign(
+        id='Design ID',
+        name='Design Name',
+        createdOn='2024-02-22'
+    )
+
     invoice = Invoice(
         invoiceDate='2023-08-01',
         invoiceNumber='12345.67',
@@ -70,7 +76,8 @@ def test_invoice_object():
         id="SomeFakeId",
         isFinalized=False,
         pdfUrl="https:www.pdf.com/",
-        contact=contact
+        contact=contact,
+        design=design,
     )
 
     assert invoice

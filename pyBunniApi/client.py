@@ -78,15 +78,13 @@ class Client:
                 headers=self.HEADER
             ).content
         except requests.HTTPError:
-            print('A HTTP error occured')
-
+            print('A HTTP error occurred')
         try:
             decoded_content = json.loads(content.decode())
         except json.JSONDecodeError:
             print('JSON could not be decoded.')
 
         if decoded_content['status'] != 'success':
-            print(decoded_content)
             raise BunniApiException(decoded_content['error'])
         else:
             return decoded_content['data']
