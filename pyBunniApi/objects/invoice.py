@@ -74,7 +74,8 @@ class Invoice:
             invoiceNumber: str,
             isFinalized: bool,
             duePeriodDays: int,
-            pdfUrl: str
+            pdfUrl: str,
+            contact: Contact | dict,
     ):
         """
         Parameters:
@@ -92,3 +93,7 @@ class Invoice:
         self.is_finalized = isFinalized
         self.due_period_days = duePeriodDays
         self.pdf_url = pdfUrl
+        if isinstance(contact, Contact):
+            self.contact = contact
+        else:
+            self.contact = Contact(**contact)
