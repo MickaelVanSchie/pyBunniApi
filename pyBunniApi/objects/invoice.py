@@ -61,10 +61,12 @@ class Invoice:
     id: str
     invoice_date: str
     invoice_number: str
+    external_id: str
     is_finalized: bool
     due_period_days: int
     rows: list[Row]
     pdf_url: str
+    tax_mode: str
 
     def __init__(
             self,
@@ -76,6 +78,8 @@ class Invoice:
             duePeriodDays: int,
             pdfUrl: str,
             contact: Contact | dict,
+            externalId: str | None = None,
+            taxMode: str | None = None,
     ):
         """
         Parameters:
@@ -89,11 +93,24 @@ class Invoice:
         self.id = id
         self.invoice_date = invoiceDate
         self.invoice_number = invoiceNumber
+        self.external_id = externalId
         self.rows = rows
         self.is_finalized = isFinalized
         self.due_period_days = duePeriodDays
         self.pdf_url = pdfUrl
+        self.tax_mode = taxMode
+
         if isinstance(contact, Contact):
             self.contact = contact
         else:
             self.contact = Contact(**contact)
+
+    def as_json(self) -> str:
+        return json.dumps({
+            "externalId": self.external_id,
+            "invoiceDate": self.invoice_date,
+            "invoiceNumber": self.invoice_number,
+            "taxMode": self.tax_mode,
+            "contact": self.contact.as_dict(),
+            "rows": self.rows,
+        })
