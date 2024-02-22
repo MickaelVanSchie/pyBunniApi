@@ -70,16 +70,16 @@ class Contact:
     def as_dict(self) -> dict:
         return {
             'id': self.id,
-            'company_name': self.company_name,
+            'companyName': self.company_name,
             'attn': self.attn,
             'street': self.street,
-            'street_number': self.street_number,
-            'postal_code': self.postal_code,
+            'streetNumber': self.street_number,
+            'postalCode': self.postal_code,
             'city': self.city,
-            'phone_number': self.phone_number,
-            'vat_identification_number': self.vat_identification_number,
-            'chamber_of_commerce_number': self.chamber_of_commerce_number,
-            'email_addresses': self.email_addresses,
+            'phoneNumber': self.phone_number,
+            'vatIdentificationNumber': self.vat_identification_number,
+            'chamberOfCommerceNumber': self.chamber_of_commerce_number,
+            'emailAddresses': self.email_addresses,
             'color': self.color,
             'fields': self.fields,
         }

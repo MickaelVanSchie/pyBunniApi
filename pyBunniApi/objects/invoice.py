@@ -1,6 +1,7 @@
 import json
 from typing import Any
 
+from .invoicedesign import InvoiceDesign
 from ..objects.contact import Contact
 from ..objects.row import Row
 
@@ -30,7 +31,7 @@ class InvoicePDF:
         self.tax_mode = tax_mode
         self.design = {"id": design}
         self.rows = [Row(**row) for row in rows]
-        if type(contact) == Contact:
+        if isinstance(contact, Contact):
             self.contact = contact
         else:
             self.contact = Contact(**contact)
@@ -67,19 +68,21 @@ class Invoice:
     rows: list[Row]
     pdf_url: str
     tax_mode: str
+    design: InvoiceDesign | dict[str, str]
 
     def __init__(
             self,
-            id: str,
             invoiceDate: str,
             rows: list[Row],
             invoiceNumber: str,
-            isFinalized: bool,
-            duePeriodDays: int,
-            pdfUrl: str,
             contact: Contact | dict,
+            design: InvoiceDesign | dict[str, str],
             externalId: str | None = None,
             taxMode: str | None = None,
+            id: str | None = None,
+            duePeriodDays: int | None = None,
+            isFinalized: bool | None = None,
+            pdfUrl: str | None = None,
     ):
         """
         Parameters:
@@ -100,6 +103,11 @@ class Invoice:
         self.pdf_url = pdfUrl
         self.tax_mode = taxMode
 
+        if isinstance(design, InvoiceDesign):
+            self.design = design
+        else:
+            self.design = InvoiceDesign(**design)
+
         if isinstance(contact, Contact):
             self.contact = contact
         else:
@@ -111,6 +119,7 @@ class Invoice:
             "invoiceDate": self.invoice_date,
             "invoiceNumber": self.invoice_number,
             "taxMode": self.tax_mode,
+            "design": {"id": self.design.id},
             "contact": self.contact.as_dict(),
             "rows": self.rows,
         })

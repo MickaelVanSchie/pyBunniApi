@@ -1,3 +1,4 @@
+import json
 from typing import TypedDict
 
 
@@ -9,3 +10,11 @@ class Row(TypedDict):
     description: str
     quantity: int
     tax: str
+
+    def as_json(self) -> str:
+        return json.dumps({
+            "unitPrice": self.unit_price,
+            "description": self.description,
+            "quantity": self.quantity,
+            "tax": self.tax,
+        })

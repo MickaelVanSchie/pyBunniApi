@@ -7,3 +7,5 @@ class InvoiceDesign:
     id: str
     name: str
     created_on: str  # Todo: Make this a proper date
+
+

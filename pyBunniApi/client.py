@@ -86,6 +86,7 @@ class Client:
             print('JSON could not be decoded.')
 
         if decoded_content['status'] != 'success':
+            print(decoded_content)
             raise BunniApiException(decoded_content['error'])
         else:
             return decoded_content['data']
