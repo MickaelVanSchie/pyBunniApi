@@ -11,6 +11,7 @@ from .resources import InvoiceDesigns
 from .resources import Invoices
 from .resources import Projects
 from .resources import Time
+from .resources import TaxRates
 
 
 class Client:
@@ -29,6 +30,7 @@ class Client:
     from .objects.project import Project  # noqa: E402
     from .objects.row import Row  # noqa: E402
     from .objects.time import Duration, TimeObject  # noqa: E402
+    from .objects.tax_rate import TaxRate # noqa: E402
 
     # Create endpoints
     def __init__(self):
@@ -39,6 +41,7 @@ class Client:
         self.invoices = Invoices(self)
         self.projects = Projects(self)
         self.time = Time(self)
+        self.tax_rates = TaxRates(self)
 
     def use_typing(self, typed: bool) -> None:
         self.TYPED = typed
