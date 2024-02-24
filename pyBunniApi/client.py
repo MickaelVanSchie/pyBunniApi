@@ -6,6 +6,7 @@ import requests
 from .error import BunniApiSetupException, BunniApiException
 from .resources import BankAccounts
 from .resources import Contacts
+from .resources import Categories
 from .resources import InvoiceDesigns
 from .resources import Invoices
 from .resources import Projects
@@ -23,6 +24,7 @@ class Client:
     from .objects.invoicedesign import InvoiceDesign  # noqa: E402
     from .objects.bankaccount import BankAccount  # noqa: E402
     from .objects.contact import Contact  # noqa: E402
+    from .objects.category import Category # noqa: E402
     from .objects.invoice import Invoice  # noqa: E402
     from .objects.project import Project  # noqa: E402
     from .objects.row import Row  # noqa: E402
@@ -32,6 +34,7 @@ class Client:
     def __init__(self):
         self.bank_accounts = BankAccounts(self)
         self.contacts = Contacts(self)
+        self.categories = Categories(self)
         self.invoice_designs = InvoiceDesigns(self)
         self.invoices = Invoices(self)
         self.projects = Projects(self)
