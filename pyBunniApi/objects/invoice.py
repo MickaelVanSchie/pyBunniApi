@@ -121,5 +121,5 @@ class Invoice:
             "taxMode": self.tax_mode,
             "design": {"id": self.design.id},
             "contact": self.contact.as_dict(),
-            "rows": self.rows,
+            "rows": [r.as_dict() for r in self.rows],
         })
