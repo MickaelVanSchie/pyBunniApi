@@ -120,7 +120,7 @@ class Invoice:
             "invoiceDate": self.invoice_date,
             "invoiceNumber": self.invoice_number,
             "taxMode": self.tax_mode,
-            "design": self.design,
+            "design": self.design.as_dict(),
             "contact": self.contact.as_dict(),
-            "rows": [r for r in self.rows],
+            "rows": [r.as_dict() for r in self.rows],
         })
