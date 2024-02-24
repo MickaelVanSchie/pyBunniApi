@@ -1,7 +1,5 @@
 from typing import Any, TYPE_CHECKING, List
 
-from deprecate import deprecated
-
 from ..objects.invoice import Invoice, InvoicePDF
 
 if TYPE_CHECKING:
