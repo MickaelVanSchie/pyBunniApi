@@ -7,6 +7,8 @@ from .client import Client
 
 class MockClient(Client):
     def create_http_request(self, endpoint: str, data: dict[str, Any] | str | None = None, method: str = "GET") -> Any:
+        # Todo: Figure out a proper way to test this. As of now I'm rewriting the code that actually does stuff.
+        # Because of that, this simply doesn't actually test the code.
         if not self.API_KEY:
             raise BunniApiSetupException("You have not set a API_KEY. Please use set_api_key() to set the API key.")
         if not self.BUSINESS_ID:
