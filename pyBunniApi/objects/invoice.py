@@ -21,7 +21,7 @@ class InvoicePDF:
             invoice_number: str,
             tax_mode: str,
             design: str,
-            rows: list[Row],
+            rows: list[Row | dict],
             contact: dict | Contact,
             id: str
     ):

@@ -1,3 +1,4 @@
+from pyBunniApi.objects.tax_rate import TaxRate
 from pyBunniApi.objects.time import Duration, TimeObject
 from pyBunniApi.objects.invoice import Invoice, InvoiceDesign
 from pyBunniApi.objects.row import Row
@@ -110,3 +111,16 @@ def test_time_object():
     )
 
     assert time_object
+
+
+def test_tax_object():
+    tax_object = TaxRate(
+        idName='NL_High_21',
+        name='Hoog',
+        percentage=21,
+        diverted=False,
+        active=True,
+        activeFrom=2019,
+        activeTo=None
+    )
+    assert tax_object
