@@ -98,9 +98,9 @@ This will return a list with all invoices, the response looks like this:
 ]
 ```
 
-### Creating an invoice ###
+### Creating an invoice PDF ###
 ___
-Please note, that as of now this feature only generates a PDF. Said invoice will not be placed in your bookkeeping
+This feature only generates a PDF. Said invoice will not be placed in your bookkeeping
 software as of now.
 You can however write your own piece of code that stores this pdf somewhere on your webserver, and sends it
 to `YOUR_BUSINESS_ID@postbode.bunni.nl` in order to get it automatically placed in your bookkeeping.
@@ -137,10 +137,10 @@ contact = PyBunniApi.Contact(
 )
 ```
 
-Now we can build a complete invoice using `Invoice()` by the following manner:
+Now we can build a complete invoice using `InvoicePDF()` by the following manner:
 
 ```python
-invoice = PyBunniApi.Invoice(
+invoicePdf = PyBunniApi.InvoicePDF(
     invoice_date='YYYY-MM-DD',
     invoice_number='12345.67',
     tax_mode='excl',  # This can be either `incl` or `excl`,
@@ -150,13 +150,13 @@ invoice = PyBunniApi.Invoice(
 )
 ```
 
-We now have a initialized `Invoice` object which we can use to create a invoice (pdf) in Bunni.
-We can do this by using `py_bunni_api.invoices.create`
+We now have a initialized `InvoicePdf` object which we can use to create a invoice (pdf) in Bunni.
+We can do this by using `py_bunni_api.invoices.create_pdf`
 
 A complete snippet of this code would look like this:
 
 ```python
-invoice_pdf = py_bunni_api.invoices.create(invoice)
+invoice_pdf = py_bunni_api.invoices.create_pdf(invoicePdf)
 ```
 
 This will return a single pdf url, so the expected response should look like this:
@@ -164,6 +164,65 @@ This will return a single pdf url, so the expected response should look like thi
 ```text
 https://restpack.io/cache/pdf/069aba16b0ced81a42ecba6d7fd841885f53dd9bcac71cbbcb08756bad73e1ac
 ```
+
+
+### Creating an invoice###
+___
+This feature creates an invoice which is placed in your bookkeeping.
+It also allows you to fetch the invoice PDF.
+
+First, let's start by defining our rows. A row requires four parameters. One invoice can contain varying rows. We append
+these bu putting rows in a list.
+
+To create row we can initialize a `Row()`. The complete syntax would look like this:
+
+```python
+row = PyBunniApi.Row(
+    unit_price=12.5,  # This should be a float.
+    description="This is a test description",
+    quantity=5,
+    tax="NL_High_21",  # This should be a string.
+)
+```
+
+For explaining how this works, one row will be enough. The next step is to create a `Contact()` This can be done like
+this:
+
+```python
+contact = PyBunniApi.Contact(
+    company_name="The Carrot Company",
+    attn='Jim Carrot',
+    street='Carrot Street',
+    street_number=20,
+    postal_code='1122AB',
+    city='Bunny Town',
+    phone_number='123456789',
+)
+```
+
+Now we can build a complete invoice using `InvoicePDF()` by the following manner:
+
+```python
+invoicePdf = PyBunniApi.Invoice(
+    external_id='Your own ID',
+    invoice_date='YYYY-MM-DD',
+    invoice_number='12345.67',
+    tax_mode='excl',  # This can be either `incl` or `excl`,
+    design='INVOICE_DESIGN_ID',  # A little down here I'll explain how you can fetch this ID.
+    contact=contact,  # We made a contact above here.
+    rows=[row]
+)
+```
+
+We now have a initialized `Invoice` object which we can use to create a invoice in Bunni.
+We can do this by using `py_bunni_api.invoices.create_or_update`
+
+A complete snippet of this code would look like this:
+
+```python
+invoice_pdf = py_bunni_api.invoices.create_or_update(invoice)
+```
+This function will not return anything if your invoice object is all good. Otherwise it returns the error received from bunni.
 
 ### Retreiving the list of invoice designs ###
 ___
