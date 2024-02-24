@@ -68,7 +68,7 @@ class Invoice:
     rows: list[Row]
     pdf_url: str
     tax_mode: str
-    design: InvoiceDesign | dict[str, str]
+    design: InvoiceDesign | dict[str, str] | None=None,
 
     def __init__(
             self,
@@ -76,7 +76,7 @@ class Invoice:
             rows: list[Row],
             invoiceNumber: str,
             contact: Contact | dict,
-            design: InvoiceDesign | dict[str, str],
+            design: InvoiceDesign | dict[str, str] | None = None,
             externalId: str | None = None,
             taxMode: str | None = None,
             id: str | None = None,
@@ -103,10 +103,11 @@ class Invoice:
         self.pdf_url = pdfUrl
         self.tax_mode = taxMode
 
-        if isinstance(design, InvoiceDesign):
-            self.design = design
-        else:
-            self.design = InvoiceDesign(**design)
+        if design:
+            if isinstance(design, InvoiceDesign):
+                self.design = design
+            else:
+                self.design = InvoiceDesign(**design)
 
         if isinstance(contact, Contact):
             self.contact = contact
@@ -119,7 +120,7 @@ class Invoice:
             "invoiceDate": self.invoice_date,
             "invoiceNumber": self.invoice_number,
             "taxMode": self.tax_mode,
-            "design": {"id": self.design.id},
+            "design": self.design,
             "contact": self.contact.as_dict(),
-            "rows": [r.as_dict() for r in self.rows],
+            "rows": [r for r in self.rows],
         })
