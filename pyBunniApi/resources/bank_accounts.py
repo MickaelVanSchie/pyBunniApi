@@ -19,4 +19,4 @@ class BankAccounts:
         return self.bunni_api.create_http_request('bank-accounts/list')['items']
 
     def typed_list(self) -> List[BankAccount]:
-        return [BankAccount(**ba) for ba in self.bunni_api.create_http_request('bank-accounts/list')['items']]
+        return [BankAccount(**bank_account) for bank_account in self.bunni_api.create_http_request('bank-accounts/list')['items']]

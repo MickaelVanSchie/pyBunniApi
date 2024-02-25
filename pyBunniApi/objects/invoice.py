@@ -1,126 +1,87 @@
 import json
-from typing import Any
+from dataclasses import dataclass
+from typing import Optional, Mapping, Any
 
 from .invoicedesign import InvoiceDesign
 from ..objects.contact import Contact
 from ..objects.row import Row
+from ..tools.case_convert import to_snake_case
 
 
-class InvoicePDF:
-    id: str
-    invoice_date: str
-    invoice_number: str
-    tax_mode: str
-    design: dict[str, str]
-    contact: Contact | dict[str, Any]
-    rows: list[Row]
-
-    def __init__(
-            self,
-            invoice_date: str,
-            invoice_number: str,
-            tax_mode: str,
-            design: str,
-            rows: list[Row | dict],
-            contact: dict | Contact,
-            id: str
-    ):
-        self.id = id
-        self.invoice_date = invoice_date
-        self.invoice_number = invoice_number
-        self.tax_mode = tax_mode
-        self.design = {"id": design}
-        self.rows = [Row(**row) for row in rows]
-        if isinstance(contact, Contact):
-            self.contact = contact
-        else:
-            self.contact = Contact(**contact)
-
-    def as_json(self) -> str:
-        row_list = []
-
-        for row in self.rows:
-            row_list.append(
-                {'unitPrice': row['unit_price'], 'description': row['description'], 'quantity': row['quantity'],
-                 'tax': {'id': row['tax']}}
-            )
-
-        return json.dumps(
-            {
-                'id': self.id,
-                'invoiceDate': self.invoice_date,
-                'invoiceNumber': self.invoice_number,
-                'rows': row_list,
-                'taxMode': self.tax_mode,
-                'design': self.design,
-                'contact': self.contact.pdf_contact()
-            }
-        )
-
-
+@dataclass
 class Invoice:
-    id: str
     invoice_date: str
     invoice_number: str
-    external_id: str
-    is_finalized: bool
-    due_period_days: int
     rows: list[Row]
-    pdf_url: str
-    tax_mode: str
-    design: InvoiceDesign | dict[str, str] | None=None,
+    is_finalized: Optional[bool]
+    due_period_days: Optional[int]
+    pdf_url: Optional[str]
+    id: Optional[str] = None
+    tax_mode: Optional[str] = None
+    design: Optional[InvoiceDesign] = None
+    external_id: Optional[str] = None
+    contact: Optional[Contact] = None
 
     def __init__(
             self,
-            invoiceDate: str,
-            rows: list[Row],
-            invoiceNumber: str,
-            contact: Contact | dict,
-            design: InvoiceDesign | dict[str, str] | None = None,
-            externalId: str | None = None,
-            taxMode: str | None = None,
-            id: str | None = None,
-            duePeriodDays: int | None = None,
-            isFinalized: bool | None = None,
-            pdfUrl: str | None = None,
+            invoice_date: Optional[str] = None,
+            invoice_number: Optional[str] = None,
+            rows: Optional[list[Row]] = None,
+            is_finalized: Optional[bool] = None,
+            due_period_days: Optional[int] = None,
+            pdf_url: Optional[str] = None,
+            id: Optional[str] = None,
+            tax_mode: Optional[str] = None,
+            design: Optional[InvoiceDesign] = None,
+            external_id: Optional[str] = None,
+            contact: Optional[Contact] = None,
+            **kwargs: Mapping[Any, Any]
     ):
-        """
-        Parameters:
-        id(str): Invoice Id like Bunni refers to it.
-        invoiceDate(str): Invoice Date in YYYY-MM-DD format.
-        rows(list[Row]): A list of rows.
-        invoiceNumber(str): Your invoice number, can be any format.
-        duePeriodDays(int): A integer which represents the due date in days.
-        pdfUrl(str): location of the PDF stored on Bunni's servers.
-        """
+        # For init via pyBunniApi
+        if invoice_date:
+            self.invoice_date = invoice_date
+        if invoice_number:
+            self.invoice_number = invoice_number
+        if rows:
+            self.rows = rows
+        self.is_finalized = is_finalized
+        self.due_period_days = due_period_days
+        self.pdf_url = pdf_url
         self.id = id
-        self.invoice_date = invoiceDate
-        self.invoice_number = invoiceNumber
-        self.external_id = externalId
-        self.rows = rows
-        self.is_finalized = isFinalized
-        self.due_period_days = duePeriodDays
-        self.pdf_url = pdfUrl
-        self.tax_mode = taxMode
+        self.tax_mode = tax_mode
+        self.design = design
+        self.external_id = external_id
+        self.contact = contact
 
-        if design:
-            if isinstance(design, InvoiceDesign):
-                self.design = design
-            else:
-                self.design = InvoiceDesign(**design)
+        # For init via Bunni
+        for key, value in kwargs.items():
+            snake_case_key = to_snake_case(key)
+            if snake_case_key == "rows":
+                _rows = []
+                assert isinstance(value, list)
+                for row in value:
+                    if isinstance(row, Row):
+                        _rows.append(row)
+                    else:
+                        _rows.append(Row(**row))
+            if snake_case_key == "contact":
+                contact = Contact(**value) if isinstance(value, Mapping) else value
+                self.contact = contact
+            if snake_case_key == "design":
+                inv_design = InvoiceDesign(**value)
+                self.design = inv_design
+            setattr(self, to_snake_case(key), value)
 
-        if isinstance(contact, Contact):
-            self.contact = contact
-        else:
-            self.contact = Contact(**contact)
-
-    def as_json(self) -> str:
-        return json.dumps({
+    def as_dict(self) -> dict:
+        return {
             "externalId": self.external_id,
             "invoiceDate": self.invoice_date,
             "invoiceNumber": self.invoice_number,
             "taxMode": self.tax_mode,
-            "design": self.design.as_dict(),
-            "contact": self.contact.as_dict(),
+            "design": self.design.as_dict() if self.design else None,
+            "contact": self.contact.as_dict() if self.contact else None,
             "rows": [r.as_dict() for r in self.rows],
-        })
+        }
+
+    def as_json(self) -> str:
+        return json.dumps(self.as_dict())

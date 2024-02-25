@@ -16,7 +16,7 @@ def test_contact_object():
     phone_number = '123456'
     contact = Contact(
         companyName=company_name,
-        toTheAttentionOf=attn,
+        attn=attn,
         street=street,
         streetNumber=street_number,
         postalCode=postal_code,
@@ -45,7 +45,7 @@ def test_row_object():
 def test_invoice_object():
     contact = Contact(
         companyName='Some Company Name',
-        toTheAttentionOf='Berry the Bunny',
+        attn='Berry the Bunny',
         street='Carrot street',
         streetNumber='21',
         postalCode='1234AB',

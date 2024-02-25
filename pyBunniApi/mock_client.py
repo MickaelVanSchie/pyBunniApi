@@ -42,7 +42,7 @@ class MockClient(Client):
                 "items": [{
                     "id": "contactId",
                     "companyName": "Fake Company Name",
-                    "toTheAttentionOf": "Fake Company Employee",
+                    "attn": "Fake Company Employee",
                     "street": "FakeStreet",
                     "streetNumber": "11",
                     "postalCode": "1234AB",
