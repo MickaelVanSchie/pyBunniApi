@@ -27,5 +27,4 @@ class Invoices:
         return self.bunni_api.create_http_request('invoices/list')['items']
 
     def typed_list(self) -> List[Invoice]:
-        invoices = self.bunni_api.create_http_request('invoices/list')['items'][:1]
-        return [Invoice(**invoice) for invoice in invoices]
+        return [Invoice(**invoice) for invoice in self.bunni_api.create_http_request('invoices/list')['items']]
