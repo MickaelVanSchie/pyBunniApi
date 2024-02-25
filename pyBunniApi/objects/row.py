@@ -1,14 +1,11 @@
 import json
-
 from dataclasses import dataclass
 from typing import Optional
 
-from dataclasses_json import dataclass_json
-
 from pyBunniApi.objects.category import Category
+from pyBunniApi.tools.case_convert import to_snake_case
 
 
-@dataclass_json
 @dataclass
 class Row:
     """
@@ -22,19 +19,10 @@ class Row:
 
     def __init__(
             self,
-            description: str = "",
-            unit_price: float | None = None,
-            quantity: float = 1,
-            tax: str | None = None,
-            booking_category: Category | dict | None = None,
+            **kwargs: Optional[dict]
     ) -> None:
-        self.unit_price = unit_price
-        self.description = description
-        self.quantity = quantity
-        self.tax = tax
-
-        if booking_category and not isinstance(booking_category, Category):
-            self.booking_category = Category(**booking_category)
+        for key, value in kwargs.items():
+            setattr(self, to_snake_case(key), value)
 
     def as_dict(self) -> dict:
         return {

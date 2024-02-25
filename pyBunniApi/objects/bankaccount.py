@@ -1,42 +1,53 @@
 import json
-
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any, Mapping
 
-from dataclasses_json import dataclass_json
+from pyBunniApi.tools.case_convert import to_snake_case
 
 
+@dataclass
 class Type:
+    name: str
+
     def __init__(self, name: str):
         self.name = name
-
-    name: str
 
     def as_dict(self) -> dict:
         return {"name": self.name}
 
-@dataclass_json
+
 @dataclass
 class BankAccount:
     id: str
+    type: Type
     name: str
     account_number: Optional[str]
-    type: Type
 
     def __init__(
             self,
-            id: str,
-            name: str,
-            type: dict[str, str] | Type,
-            account_number: Optional[str] | None = None,
+            id: Optional[str] = None,
+            type: Optional[Type] = None,
+            name: Optional[str] = None,
+            account_number: Optional[str] = None,
+            **kwargs: Mapping[Any, Any]
     ):
-        self.id = id
-        self.name = name
-        self.account_number = account_number
-        if isinstance(type, Type):
+
+        # For init via pyBunniApi
+        if id:
+            self.id = id
+        if type:
             self.type = type
-        else:
-            self.type = Type(**type)
+        if name:
+            self.name = name
+        if account_number:
+            self.account_number = account_number
+
+        # For init via Bunni
+        for key, value in kwargs.items():
+            if key == "type":
+                if not isinstance(value, Type):
+                    self.type = Type(**value)
+            setattr(self, to_snake_case(key), value)
 
     def as_dict(self) -> dict:
         # Returns a snakeCase dict
@@ -49,3 +60,7 @@ class BankAccount:
 
     def as_json(self) -> str:
         return json.dumps(self.as_dict())
+
+    def from_bunni(self, bunni_dict):
+        for key, value in bunni_dict.items():
+            setattr(self, key, value)

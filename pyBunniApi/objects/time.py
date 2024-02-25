@@ -1,8 +1,10 @@
 import json
+from dataclasses import dataclass
 
 from ..objects.project import Project
 
 
+@dataclass
 class Duration:
     def __init__(self, duration: dict):
         self.h = duration.get("h", 0)
@@ -18,6 +20,7 @@ class Duration:
         return json.dumps(self.as_dict())
 
 
+@dataclass
 class TimeObject:
     id: str
     date: str

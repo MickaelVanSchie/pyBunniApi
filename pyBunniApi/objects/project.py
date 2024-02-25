@@ -1,6 +1,9 @@
 import json
 
+from dataclasses import dataclass
 
+
+@dataclass
 class Project:
     def __init__(self, id: str, color: str, name: str):
         self.id = id
@@ -10,7 +13,6 @@ class Project:
     id: str | None
     color: str
     name: str
-
 
     def as_dict(self) -> dict:
         return {
