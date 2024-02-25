@@ -1,3 +1,6 @@
+import json
+
+
 class Project:
     def __init__(self, id: str, color: str, name: str):
         self.id = id
@@ -7,3 +10,14 @@ class Project:
     id: str | None
     color: str
     name: str
+
+
+    def as_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "color": self.color,
+            "name": self.name,
+        }
+
+    def as_json(self) -> str:
+        return json.dumps(self.as_dict())

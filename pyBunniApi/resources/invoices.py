@@ -1,6 +1,7 @@
+import json
 from typing import Any, TYPE_CHECKING, List
 
-from ..objects.invoice import Invoice, InvoicePDF
+from ..objects.invoice import Invoice
 
 if TYPE_CHECKING:
     from pyBunniApi.client import Client
@@ -10,7 +11,7 @@ class Invoices:
     def __init__(self, bunni_api: "Client"):
         self.bunni_api = bunni_api
 
-    def create_pdf(self, invoice: InvoicePDF) -> None:
+    def create_pdf(self, invoice: Invoice) -> None:
         return self.bunni_api.create_http_request('invoices/create-pdf', data=invoice.as_json(), method="POST")['pdf'][
             'url']
 
@@ -26,4 +27,4 @@ class Invoices:
         return self.bunni_api.create_http_request('invoices/list')['items']
 
     def typed_list(self) -> List[Invoice]:
-        return [Invoice(**invoice) for invoice in self.bunni_api.create_http_request('invoices/list')['items']]
+        return [Invoice.from_dict(invoice) for invoice in self.bunni_api.create_http_request('invoices/list')['items']]
