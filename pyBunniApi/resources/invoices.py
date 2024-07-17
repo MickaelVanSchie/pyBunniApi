@@ -1,4 +1,3 @@
-import json
 from typing import Any, TYPE_CHECKING, List
 
 from ..objects.invoice import Invoice
