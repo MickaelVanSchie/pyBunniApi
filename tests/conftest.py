@@ -18,7 +18,7 @@ def testClient() -> Client:
 
 @pytest.fixture
 def untypedClient(testClient: Client):
-    testClient.TYPED = False
+    testClient.use_typing(False)
     return testClient
 
 
@@ -28,6 +28,15 @@ def bankAccount() -> dict:
         "id": "1",
         "name": "Test",
         "accountNumber": "1234",
+        "type": {"name": "Test"},
+    }
+
+@pytest.fixture
+def bankAccount_snake() -> dict:
+    return {
+        "id": "1",
+        "name": "Test",
+        "account_number": "1234",
         "type": {"name": "Test"},
     }
 

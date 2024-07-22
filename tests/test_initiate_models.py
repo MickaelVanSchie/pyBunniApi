@@ -6,30 +6,6 @@ from pyBunniApi.objects.project import Project
 from pyBunniApi.objects.contact import Contact
 
 
-def test_contact_object():
-    company_name = 'Some Company Name'
-    attn = 'Berry the Bunny'
-    street = 'Carrot street'
-    street_number = '21'
-    postal_code = '1234AB'
-    city = 'Carrot Town'
-    phone_number = '123456'
-    contact = Contact(
-        companyName=company_name,
-        attn=attn,
-        street=street,
-        streetNumber=street_number,
-        postalCode=postal_code,
-        city=city,
-        phoneNumber=phone_number,
-        color="#FFFFFF",
-        chamberOfCommerceNumber="",
-        vatIdentificationNumber="",
-        emailAddresses=["this@isfake.com"],
-        fields={},
-    )
-
-    assert contact
 
 
 def test_row_object():

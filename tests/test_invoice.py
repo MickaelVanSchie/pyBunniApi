@@ -11,10 +11,9 @@ def test_invoice_list_typed(invoice: Invoice, testClient: Client):
     assert isinstance(resp[0], Invoice)
 
 
-def test_invoice_list_untyped(invoice: Invoice, testClient: Client):
-    testClient.create_http_request.return_value = {"items": [invoice, invoice]}
-    testClient.TYPED = False
-    resp = testClient.invoices.list()
+def test_invoice_list_untyped(invoice: Invoice, untypedClient: Client):
+    untypedClient.create_http_request.return_value = {"items": [invoice, invoice]}
+    resp = untypedClient.invoices.list()
     assert len(resp) == 2
     assert isinstance(resp[0], dict)
 
