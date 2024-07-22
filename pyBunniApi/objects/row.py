@@ -26,26 +26,18 @@ class Row:
             booking_category: Optional[Category] = None,
             **kwargs: Mapping[Any, Any]
     ) -> None:
-        # For init via pyBunniApi
-        if description:
-            self.description = description
-        if quantity:
-            self.quantity = quantity
-        if tax:
-            self.tax = tax
-        if unit_price:
-            self.unit_price = unit_price
-        if booking_category:
-            self.booking_category = booking_category
-        for key, value in kwargs.items():
-            setattr(self, to_snake_case(key), value)
+        self.description = description
+        self.quantity = quantity
+        self.tax_rate = tax
+        self.unit_price = unit_price or kwargs.get("unitPrice")
+        self.booking_category = booking_category or None
 
     def as_dict(self) -> dict:
         return {
             "unitPrice": self.unit_price,
             "description": self.description,
             "quantity": self.quantity,
-            "tax": {"id": self.tax},  # Todo Make tax a proper model.,
+            "tax_rate": {"id": self.tax_rate} if self.tax_rate else None,
             "bookingCategory": self.booking_category.as_dict() if self.booking_category else None
         }
 

@@ -46,3 +46,4 @@ class Invoices:
             return [invoice for invoice in self.typed_list() if not invoice.is_finalized]
         else:
             return [invoice for invoice in self.untyped_list() if invoice["is_finalized"] == "false"]
+        

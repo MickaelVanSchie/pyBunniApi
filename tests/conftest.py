@@ -40,8 +40,7 @@ def invoice(category: Category, invoiceDesign: InvoiceDesign, contact: Contact) 
             {
                 "description": "Test",
                 "quantity": 1,
-                "price": 1.0,
-                "taxRate": 21,
+                "unitPrice": 1.50,
                 "category": category,
             }
         ],
@@ -55,11 +54,40 @@ def invoice(category: Category, invoiceDesign: InvoiceDesign, contact: Contact) 
         "contact": contact,
     }
 
+@pytest.fixture
+def invoice_snake(
+    category_snake: Category, invoiceDesign_snake: InvoiceDesign, contact_snake: Contact
+) -> dict:
+    return {
+        "invoice_date": "17-07-2024",
+        "invoice_number": "2345",
+        "rows": [
+            {
+                "description": "Test",
+                "quantity": 1,
+                "unit_price": 1.50,
+                "category": category_snake,
+                "tax": "NL_High_21",
+            }
+        ],
+        "is_finalized": True,
+        "due_period_days": 30,
+        "pdf_url": "https://www.example.com",
+        "id": "1",
+        "tax_mode": "EXCLUSIVE",
+        "design": invoiceDesign_snake,
+        "external_id": "1234",
+        "contact": contact_snake,
+    }
+
 
 @pytest.fixture
 def category() -> dict:
     return {"id": "1", "name": "Test", "color": "#FFFFFF", "ledgerNumber": "1234"}
 
+@pytest.fixture
+def category_snake() -> dict:
+    return {"id": "1", "name": "Test", "color": "#FFFFFF", "ledger_number": "1234"}
 
 @pytest.fixture
 def contact() -> dict:
@@ -79,6 +107,23 @@ def contact() -> dict:
         "id": "1",
     }
 
+@pytest.fixture
+def contact_snake() -> dict:
+    return {
+        "attn": "Test Person",
+        "street": "Test Street",
+        "street_number": "1",
+        "postal_code": "1234AA",
+        "city": "Test City",
+        "company_name": "Test Company",
+        "phone_number": "0612345678",
+        "vat_identification_number": "NL123456789B01",
+        "chamber_of_commerce_number": "12345678",
+        "email_addresses":  ["private@email.com", "work@email.com"],
+        "color": "#FFFFFF",
+        "fields": [{"label": "Test Label", "value": "Test Value"}],
+        "id": "1",
+    }
 
 @pytest.fixture
 def row(category: Category) -> dict:
@@ -96,5 +141,13 @@ def invoiceDesign() -> dict:
     return {
         "id": "1",
         "createdOn": "17-07-2024",
+        "name": "Some Design",
+    }
+
+@pytest.fixture
+def invoiceDesign_snake() -> dict:
+    return {
+        "id": "1",
+        "created_on": "17-07-2024",
         "name": "Some Design",
     }
