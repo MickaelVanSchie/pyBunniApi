@@ -15,6 +15,12 @@ class Contacts:
             return self.typed_list()
         return self.untyped_list()
 
+    def get(self, contact_id: str) -> Contact:
+        contact = self.bunni_api.create_http_request(f'contacts/get/{contact_id}')
+        if self.bunni_api.TYPED:
+            return Contact(**contact)
+        return contact
+
     def untyped_list(self) -> List[dict[str, Any]]:
         return self.bunni_api.create_http_request('contacts/list')['items']
 
