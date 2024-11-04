@@ -160,3 +160,12 @@ def invoiceDesign_snake() -> dict:
         "created_on": "17-07-2024",
         "name": "Some Design",
     }
+
+
+@pytest.fixture
+def project() -> dict:
+    return {
+        "id": "1",
+        "color": "#FFFFFF",
+        "name": "Test project"
+    }
