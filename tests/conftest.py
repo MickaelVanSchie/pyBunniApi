@@ -1,4 +1,5 @@
 from unittest import mock
+
 import pytest
 
 from pyBunniApi.client import Client
@@ -31,6 +32,7 @@ def bankAccount() -> dict:
         "type": {"name": "Test"},
     }
 
+
 @pytest.fixture
 def bankAccount_snake() -> dict:
     return {
@@ -39,6 +41,7 @@ def bankAccount_snake() -> dict:
         "account_number": "1234",
         "type": {"name": "Test"},
     }
+
 
 @pytest.fixture
 def invoice(category: Category, invoiceDesign: InvoiceDesign, contact: Contact) -> dict:
@@ -62,6 +65,7 @@ def invoice(category: Category, invoiceDesign: InvoiceDesign, contact: Contact) 
         "externalId": "1234",
         "contact": contact,
     }
+
 
 @pytest.fixture
 def invoice_snake(
@@ -94,9 +98,11 @@ def invoice_snake(
 def category() -> dict:
     return {"id": "1", "name": "Test", "color": "#FFFFFF", "ledgerNumber": "1234"}
 
+
 @pytest.fixture
 def category_snake() -> dict:
     return {"id": "1", "name": "Test", "color": "#FFFFFF", "ledger_number": "1234"}
+
 
 @pytest.fixture
 def contact() -> dict:
@@ -116,6 +122,7 @@ def contact() -> dict:
         "id": "1",
     }
 
+
 @pytest.fixture
 def contact_snake() -> dict:
     return {
@@ -128,11 +135,12 @@ def contact_snake() -> dict:
         "phone_number": "0612345678",
         "vat_identification_number": "NL123456789B01",
         "chamber_of_commerce_number": "12345678",
-        "email_addresses":  ["private@email.com", "work@email.com"],
+        "email_addresses": ["private@email.com", "work@email.com"],
         "color": "#FFFFFF",
         "fields": [{"label": "Test Label", "value": "Test Value"}],
         "id": "1",
     }
+
 
 @pytest.fixture
 def row(category: Category) -> dict:
@@ -152,6 +160,7 @@ def invoiceDesign() -> dict:
         "createdOn": "17-07-2024",
         "name": "Some Design",
     }
+
 
 @pytest.fixture
 def invoiceDesign_snake() -> dict:

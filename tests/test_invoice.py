@@ -55,6 +55,19 @@ def test_quotation_list_typed(invoice: Invoice, testClient: Client):
     assert not resp[0].is_finalized
 
 
+def test_get_next_invoice_number(invoice: dict, testClient: Client):
+    invoice_2 = invoice
+    invoice_3 = invoice
+
+    invoice_2["invoiceNumber"] = '1235'
+    invoice_3["invoiceNumber"] = '1236'
+    invoice_list = [invoice, invoice_2, invoice_3]
+
+    testClient.create_http_request.return_value = {"items": invoice_list}
+    resp = testClient.invoices.next_invoice_number()
+    assert resp == 1237
+
+
 # Test Initialization methods of Invoice.
 def test_initialize_invoice_camel_case(invoice: Invoice):
     # Test initialization of the Invoice object as they are received from Bunni.
@@ -68,6 +81,7 @@ def test_initialize_invoice_camel_case(invoice: Invoice):
     assert invoice.rows[0].unit_price == 1.50
     assert invoice.due_period_days == 30
     assert isinstance(invoice.design, InvoiceDesign)
+
 
 def test_initialize_invoice_snake_case(invoice_snake: Invoice):
     invoice = Invoice(**invoice_snake)
