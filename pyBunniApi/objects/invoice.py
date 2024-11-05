@@ -5,7 +5,6 @@ from typing import Optional, Mapping, Any
 from .invoicedesign import InvoiceDesign
 from ..objects.contact import Contact
 from ..objects.row import Row
-from ..tools.case_convert import to_snake_case
 
 
 @dataclass
@@ -37,40 +36,19 @@ class Invoice:
             contact: Optional[Contact] = None,
             **kwargs: Mapping[Any, Any]
     ):
-        # For init via pyBunniApi
-        if invoice_date:
-            self.invoice_date = invoice_date
-        if invoice_number:
-            self.invoice_number = invoice_number
-        if rows:
-            self.rows = rows
-        self.is_finalized = is_finalized
-        self.due_period_days = due_period_days
-        self.pdf_url = pdf_url
+        self.invoice_date = invoice_date or kwargs.get("invoiceDate")
+        self.invoice_number = invoice_number or kwargs.get("invoiceNumber")
+        self.rows = [Row(**row) if isinstance(row, dict) else row for row in rows]
+        self.is_finalized = is_finalized or kwargs.get("isFinalized")
+        self.due_period_days = due_period_days or kwargs.get("duePeriodDays")
+        self.pdf_url = pdf_url or kwargs.get("pdfUrl")
         self.id = id
-        self.tax_mode = tax_mode
-        self.design = design
-        self.external_id = external_id
-        self.contact = contact
+        self.tax_mode = tax_mode or kwargs.get("taxMode")
+        self.design = design 
+        self.external_id = external_id or kwargs.get("externalId")
+        self.contact = Contact(**contact) if isinstance(contact, dict) else contact
+        self.design = InvoiceDesign(**design) if isinstance(design, dict) else design
 
-        # For init via Bunni
-        for key, value in kwargs.items():
-            snake_case_key = to_snake_case(key)
-            if snake_case_key == "rows":
-                _rows = []
-                assert isinstance(value, list)
-                for row in value:
-                    if isinstance(row, Row):
-                        _rows.append(row)
-                    else:
-                        _rows.append(Row(**row))
-            if snake_case_key == "contact":
-                contact = Contact(**value) if isinstance(value, Mapping) else value
-                self.contact = contact
-            if snake_case_key == "design":
-                inv_design = InvoiceDesign(**value)
-                self.design = inv_design
-            setattr(self, to_snake_case(key), value)
 
     def as_dict(self) -> dict:
         return {

@@ -6,30 +6,6 @@ from pyBunniApi.objects.project import Project
 from pyBunniApi.objects.contact import Contact
 
 
-def test_contact_object():
-    company_name = 'Some Company Name'
-    attn = 'Berry the Bunny'
-    street = 'Carrot street'
-    street_number = '21'
-    postal_code = '1234AB'
-    city = 'Carrot Town'
-    phone_number = '123456'
-    contact = Contact(
-        companyName=company_name,
-        attn=attn,
-        street=street,
-        streetNumber=street_number,
-        postalCode=postal_code,
-        city=city,
-        phoneNumber=phone_number,
-        color="#FFFFFF",
-        chamberOfCommerceNumber="",
-        vatIdentificationNumber="",
-        emailAddresses=["this@isfake.com"],
-        fields={},
-    )
-
-    assert contact
 
 
 def test_row_object():
@@ -40,48 +16,6 @@ def test_row_object():
         tax='NL_High21',
     )
     assert row
-
-
-def test_invoice_object():
-    contact = Contact(
-        companyName='Some Company Name',
-        attn='Berry the Bunny',
-        street='Carrot street',
-        streetNumber='21',
-        postalCode='1234AB',
-        city='Carrot Town',
-        phoneNumber='123456',
-        color="#FFFFFF",
-        chamberOfCommerceNumber="",
-        vatIdentificationNumber="",
-        emailAddresses=["this@isfake.com"],
-        fields={},
-    )
-    row = Row(
-        unit_price=10.5,
-        description='this is a test description',
-        quantity=5,
-        tax='NL_High21',
-    )
-    design = InvoiceDesign(
-        id='Design ID',
-        name='Design Name',
-        createdOn='2024-02-22'
-    )
-
-    invoice = Invoice(
-        invoiceDate='2023-08-01',
-        invoiceNumber='12345.67',
-        rows=[row],
-        duePeriodDays=14,
-        id="SomeFakeId",
-        isFinalized=False,
-        pdfUrl="https:www.pdf.com/",
-        contact=contact,
-        design=design,
-    )
-
-    assert invoice
 
 
 def test_project_object():

@@ -33,14 +33,10 @@ class BankAccount:
     ):
 
         # For init via pyBunniApi
-        if id:
-            self.id = id
-        if type:
-            self.type = type
-        if name:
-            self.name = name
-        if account_number:
-            self.account_number = account_number
+        self.id = id
+        self.type = Type(**type) if isinstance(type, dict) else type
+        self.name = name
+        self.account_number = account_number or kwargs.get("accountNumber")
 
         # For init via Bunni
         for key, value in kwargs.items():
