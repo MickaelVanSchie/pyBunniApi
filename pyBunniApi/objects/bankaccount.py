@@ -2,7 +2,7 @@ import json
 from dataclasses import dataclass
 from typing import Optional, Any, Mapping
 
-from pyBunniApi.pb_tools.case_convert import to_snake_case
+from pyBunniApi.tools.case_convert import to_snake_case
 
 
 @dataclass

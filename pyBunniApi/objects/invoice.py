@@ -5,7 +5,7 @@ from typing import Optional, Mapping, Any
 from .invoicedesign import InvoiceDesign
 from ..objects.contact import Contact
 from ..objects.row import Row
-from ..pb_tools.case_convert import to_snake_case
+from ..tools.case_convert import to_snake_case
 
 
 @dataclass
