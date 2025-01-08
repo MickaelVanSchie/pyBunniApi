@@ -7,3 +7,5 @@
 /.idea
 *.pyc
 /env
+.venv
+.vscode
