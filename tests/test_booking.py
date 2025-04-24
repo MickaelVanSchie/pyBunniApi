@@ -7,7 +7,7 @@ def test_booking_list(testClient: Client, booking: dict):
     booking = Booking(**booking)
     testClient.create_http_request.return_value = [booking, booking]
 
-    resp = testClient.booking.list()
+    resp = testClient.bookings.list()
 
     assert resp == [booking, booking]
     assert type(resp[0]) == Booking
