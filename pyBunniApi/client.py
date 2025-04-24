@@ -5,13 +5,14 @@ import requests
 
 from .error import BunniApiSetupException, BunniApiException
 from .resources import BankAccounts
-from .resources import Contacts
 from .resources import Categories
+from .resources import Contacts
 from .resources import InvoiceDesigns
 from .resources import Invoices
 from .resources import Projects
-from .resources import Time
 from .resources import TaxRates
+from .resources import Time
+from .resources.bookings import Bookings
 
 
 class Client:
@@ -22,19 +23,11 @@ class Client:
     HEADER: dict[str, Any] = {}
     TYPED: bool = True
     _client = requests.session()
-    from .objects.invoicedesign import InvoiceDesign  # noqa: E402
-    from .objects.bankaccount import BankAccount  # noqa: E402
-    from .objects.contact import Contact  # noqa: E402
-    from .objects.category import Category # noqa: E402
-    from .objects.invoice import Invoice  # noqa: E402
-    from .objects.project import Project  # noqa: E402
-    from .objects.row import Row  # noqa: E402
-    from .objects.time import Duration, TimeObject  # noqa: E402
-    from .objects.tax_rate import TaxRate # noqa: E402
 
     # Create endpoints
     def __init__(self):
         self.bank_accounts = BankAccounts(self)
+        self.bookings = Bookings(self)
         self.contacts = Contacts(self)
         self.categories = Categories(self)
         self.invoice_designs = InvoiceDesigns(self)
