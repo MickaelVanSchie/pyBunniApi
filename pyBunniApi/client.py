@@ -23,6 +23,16 @@ class Client:
     HEADER: dict[str, Any] = {}
     TYPED: bool = True
     _client = requests.session()
+    from .objects.invoicedesign import InvoiceDesign  # noqa: E402
+    from .objects.bankaccount import BankAccount  # noqa: E402
+    from .objects.booking import Booking # noqa: E402
+    from .objects.contact import Contact  # noqa: E402
+    from .objects.category import Category # noqa: E402
+    from .objects.invoice import Invoice  # noqa: E402
+    from .objects.project import Project  # noqa: E402
+    from .objects.row import Row  # noqa: E402
+    from .objects.time import Duration, TimeObject  # noqa: E402
+    from .objects.tax_rate import TaxRate # noqa: E402
 
     # Create endpoints
     def __init__(self):
