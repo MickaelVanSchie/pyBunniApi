@@ -4,9 +4,7 @@ from pyBunniApi.objects.booking import Booking
 
 
 def test_booking_list(testClient: Client, booking: dict):
-    booking = Booking(**booking)
-    testClient.create_http_request.return_value = [booking, booking]
-
+    testClient.create_http_request.return_value = {"items": [booking, booking]}
     resp = testClient.bookings.list()
 
     assert resp == [booking, booking]
@@ -14,8 +12,7 @@ def test_booking_list(testClient: Client, booking: dict):
 
 
 def test_booking_list_untyped(untypedClient: Client, booking: dict):
-    booking = Booking(**booking)
-    untypedClient.create_http_request.return_value = [booking, booking]
+    untypedClient.create_http_request.return_value = {"items": [booking, booking]}
     resp = untypedClient.bookings.untyped_list()
 
     assert resp == [booking, booking]
