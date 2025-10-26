@@ -34,7 +34,7 @@ class Invoice:
             tax_mode: Optional[str] = None,
             design: Optional[InvoiceDesign] = None,
             external_id: Optional[str] = None,
-            contact: Optional[Contact] = None,
+            referencedContact: Optional[Contact] = None,
             **kwargs: Mapping[Any, Any]
     ):
         self.invoice_date = invoice_date or kwargs.get("invoiceDate")
@@ -47,7 +47,7 @@ class Invoice:
         self.tax_mode = tax_mode or kwargs.get("taxMode")
         self.design = design 
         self.external_id = external_id or kwargs.get("externalId")
-        self.contact = Contact(**contact) if isinstance(contact, dict) else contact
+        self.contact = Contact(**referencedContact) if isinstance(referencedContact, dict) else referencedContact
         self.design = InvoiceDesign(**design) if isinstance(design, dict) else design
 
 
