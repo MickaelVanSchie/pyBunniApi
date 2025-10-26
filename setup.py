@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyBunniApi',
-    version='1.2.6',
+    version='1.2.7',
     description='A API Client for communicating with the Bunni accounting software',
     url='https://github.com/sme4gle/pyBunniApi',
     author='Mickael van Schie',
