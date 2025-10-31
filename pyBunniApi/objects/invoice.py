@@ -58,7 +58,7 @@ class Invoice:
             "invoiceNumber": self.invoice_number,
             "taxMode": self.tax_mode,
             "design": self.design.as_dict() if self.design else None,
-            "contact": self.contact.as_dict() if self.contact else None,
+            "referencedContact": self.contact.as_dict() if self.contact else None,
             "rows": [r.as_dict() for r in self.rows],
         }
 
