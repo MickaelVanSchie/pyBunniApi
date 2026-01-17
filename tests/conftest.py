@@ -178,3 +178,31 @@ def project() -> dict:
         "color": "#FFFFFF",
         "name": "Test project"
     }
+
+@pytest.fixture
+def booking() -> dict:
+    return {
+        "id": "1",
+        "external_id": "ext-123",
+        "invoice_number": "INV-2024-001",
+        "date": "2024-01-17",
+        "description": "Test booking",
+        "rows": [
+            {
+                "description": "Test row",
+                "quantity": 1,
+                "price": 1.0,
+                "tax_rate": 21
+            }
+        ],
+        "documents": [
+            {
+                "id": "1",
+                "name": "Test document",
+                "download_url": "https://example.com/doc.pdf",
+                "thumbnail_url": "https://example.com/thumb.jpg",
+                "page_count": 1,
+                "checksum": "abc123"
+            }
+        ]
+    }
