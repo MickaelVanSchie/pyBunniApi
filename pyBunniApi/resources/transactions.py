@@ -20,4 +20,4 @@ class Transactions:
         return self.bunni_api.create_http_request('transactions/list')['items']
 
     def typed_list(self) -> List[Transaction]:
-        return [Transaction(**project) for transaction in self.bunni_api.create_http_request('transactions/list')['items']]
+        return [Transaction(**transaction) for transaction in self.bunni_api.create_http_request('transactions/list')['items']]
