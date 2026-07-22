@@ -23,21 +23,6 @@ class Transaction:
             description: Optional[str] = None,
     ):
         # For init via pyBunniApi
-        if id_name:
-            self.id_name = id_name
-        if name is not None:
-            self.name = name
-        if percentage is not None:
-            self.percentage = percentage
-        if diverted is not None:
-            self.diverted = diverted
-        if active is not None:
-            self.active = active
-        if active_from:
-            self.active_from = active_from
-        if active_to:
-            self.active_to = active_to
-
         if id:
             self.id = id
         if bank_account_id:
