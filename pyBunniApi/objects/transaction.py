@@ -21,6 +21,7 @@ class Transaction:
             account_number: Optional[str] = None,
             amount: Optional[float] = None,
             description: Optional[str] = None,
+            **kwargs: Mapping[Any, Any]
     ):
         # For init via pyBunniApi
         if id:
