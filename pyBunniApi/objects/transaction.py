@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any, Mapping
 
 from pyBunniApi.tools.case_convert import to_snake_case
 
