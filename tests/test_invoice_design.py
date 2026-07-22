@@ -30,3 +30,17 @@ def test_initiate_model_snake_case(invoiceDesign_snake: InvoiceDesign):
 
     assert invoice_design.id == "1"
     assert invoice_design.created_on == "17-07-2024"
+
+
+def test_invoice_design_as_dict_invoice_type(invoiceDesign: dict):
+    design = InvoiceDesign(**invoiceDesign)
+    assert design.as_dict() == {"id": "1"}
+
+
+def test_invoice_design_as_dict_complete_type(invoiceDesign: dict):
+    design = InvoiceDesign(**invoiceDesign)
+    assert design.as_dict(type="complete") == {
+        "id": "1",
+        "name": "Some Design",
+        "createdOn": "17-07-2024",
+    }

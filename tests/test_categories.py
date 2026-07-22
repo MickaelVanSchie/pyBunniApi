@@ -1,3 +1,5 @@
+import json
+
 from pyBunniApi.client import Client
 from pyBunniApi.objects.category import Category
 
@@ -27,3 +29,24 @@ def test_initialize_category_model_camel_case(category_snake: dict):
     assert category.id == "1"
     assert category.name == "Test"
     assert category.ledger_number == "1234"
+
+
+def test_category_ledger_number_set_without_color():
+    # Regression test: ledger_number must not depend on color being set.
+    category = Category(id="1", name="Test", ledger_number="1234")
+    assert category.ledger_number == "1234"
+
+
+def test_category_as_dict(category: dict):
+    cat = Category(**category)
+    assert cat.as_dict() == {
+        "id": "1",
+        "name": "Test",
+        "color": "#FFFFFF",
+        "ledgerNumber": "1234",
+    }
+
+
+def test_category_as_json(category: dict):
+    cat = Category(**category)
+    assert json.loads(cat.as_json()) == cat.as_dict()

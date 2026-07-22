@@ -11,8 +11,8 @@ from pyBunniApi.objects.invoicedesign import InvoiceDesign
 @pytest.fixture
 def testClient() -> Client:
     cl = Client()
-    cl.set_api_key = "FAKEAPIKEY"
-    cl.set_business_id = "FAKEBUSINESSID"
+    cl.set_api_key("FAKEAPIKEY")
+    cl.set_business_id("FAKEBUSINESSID")
     cl.create_http_request = mock.MagicMock()
     return cl
 
@@ -177,4 +177,41 @@ def project() -> dict:
         "id": "1",
         "color": "#FFFFFF",
         "name": "Test project"
+    }
+
+
+@pytest.fixture
+def tax_rate() -> dict:
+    return {
+        "idName": "NL_High_21",
+        "name": "Hoog",
+        "percentage": 21.0,
+        "diverted": False,
+        "active": True,
+        "activeFrom": "2019-01-01",
+        "activeTo": None,
+    }
+
+
+@pytest.fixture
+def transaction() -> dict:
+    return {
+        "id": "tr_1",
+        "bankAccountId": "ba_1",
+        "date": "2023-08-10",
+        "accountNumber": "NL00BANK0123456789",
+        "amount": 100.0,
+        "description": "Transaction description",
+    }
+
+
+@pytest.fixture
+def time_entry(project: dict) -> dict:
+    return {
+        "id": "ti_1",
+        "date": "2023-08-10",
+        "duration": {"h": 5, "m": 3},
+        "project": project,
+        "description": "Time description",
+        "externalId": "1234",
     }

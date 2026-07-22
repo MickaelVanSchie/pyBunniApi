@@ -15,7 +15,10 @@ def test_row_object():
         quantity=5,
         tax='NL_High21',
     )
-    assert row
+    assert row.unit_price == 10.5
+    assert row.description == 'this is a test description'
+    assert row.quantity == 5
+    assert row.tax_rate == 'NL_High21'
 
 
 def test_project_object():
@@ -24,13 +27,18 @@ def test_project_object():
         id='INTERNAL ID',
         name='Berry the Bunny'
     )
-    assert project
+    assert project.color == '#123456'
+    assert project.id == 'INTERNAL ID'
+    assert project.name == 'Berry the Bunny'
 
 
 def test_time_object():
     duration = Duration(
         {"h": 2, "m": 30}
     )
+    assert duration.h == 2
+    assert duration.m == 30
+
     project = Project(
         color='#123456',
         id='INTERNAL ID',
@@ -44,7 +52,12 @@ def test_time_object():
         id="someFakeId"
     )
 
-    assert time_object
+    assert time_object.id == "someFakeId"
+    assert time_object.date == '2023-08-01'
+    assert time_object.duration.h == 2
+    assert time_object.duration.m == 30
+    assert time_object.description == 'some description string here'
+    assert time_object.project == project
 
 
 def test_tax_object():
@@ -57,4 +70,10 @@ def test_tax_object():
         activeFrom=2019,
         activeTo=None
     )
-    assert tax_object
+    assert tax_object.id_name == 'NL_High_21'
+    assert tax_object.name == 'Hoog'
+    assert tax_object.percentage == 21
+    assert tax_object.diverted is False
+    assert tax_object.active is True
+    assert tax_object.active_from == 2019
+    assert tax_object.active_to is None

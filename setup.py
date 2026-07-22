@@ -12,6 +12,7 @@ setup(
     },
     license='BSD 2-clause',
     packages=find_packages(),
+    python_requires='>=3.10',
     install_requires=['requests>=2.25.1'],
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
