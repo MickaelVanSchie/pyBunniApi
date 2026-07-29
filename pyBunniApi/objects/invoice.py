@@ -21,11 +21,13 @@ class Invoice:
     design: Optional[InvoiceDesign] = None
     external_id: Optional[str] = None
     contact: Optional[Contact] = None
+    outstanding_balance: Optional[int] = None
 
     def __init__(
             self,
             invoice_date: Optional[str] = None,
             invoice_number: Optional[str] = None,
+            outstanding_balance: Optional[int] = None,
             rows: Optional[list[Row]] = None,
             is_finalized: Optional[bool] = None,
             due_period_days: Optional[int] = None,
@@ -49,6 +51,7 @@ class Invoice:
         self.external_id = external_id or kwargs.get("externalId")
         self.contact = Contact(**referencedContact) if isinstance(referencedContact, dict) else referencedContact
         self.design = InvoiceDesign(**design) if isinstance(design, dict) else design
+        self.outstanding_balance = outstanding_balance or kwargs.get("outstandingBalance")
 
 
     def as_dict(self) -> dict:
@@ -56,6 +59,7 @@ class Invoice:
             "externalId": self.external_id,
             "invoiceDate": self.invoice_date,
             "invoiceNumber": self.invoice_number,
+            "outstandingBalance": self.outstanding_balance,
             "taxMode": self.tax_mode,
             "design": self.design.as_dict() if self.design else None,
             "referencedContact": self.contact.as_dict() if self.contact else None,
