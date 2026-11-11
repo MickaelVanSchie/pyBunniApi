@@ -14,6 +14,7 @@ class Invoice:
     invoice_number: str
     rows: list[Row]
     is_finalized: Optional[bool]
+    outstanding_balance: float
     due_period_days: Optional[int]
     pdf_url: Optional[str]
     id: Optional[str] = None
@@ -28,6 +29,7 @@ class Invoice:
             invoice_number: Optional[str] = None,
             rows: Optional[list[Row]] = None,
             is_finalized: Optional[bool] = None,
+            outstanding_balance: float = None,
             due_period_days: Optional[int] = None,
             pdf_url: Optional[str] = None,
             id: Optional[str] = None,
@@ -41,6 +43,7 @@ class Invoice:
         self.invoice_number = invoice_number or kwargs.get("invoiceNumber")
         self.rows = [Row(**row) if isinstance(row, dict) else row for row in rows]
         self.is_finalized = is_finalized or kwargs.get("isFinalized")
+        self.outstanding_balance = outstanding_balance or kwargs.get("outstandingBalance")
         self.due_period_days = due_period_days or kwargs.get("duePeriodDays")
         self.pdf_url = pdf_url or kwargs.get("pdfUrl")
         self.id = id

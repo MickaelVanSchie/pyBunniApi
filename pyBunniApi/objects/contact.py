@@ -24,6 +24,8 @@ class Contact:
     city: Optional[str]
     company_name: Optional[str] = None
     phone_number: Optional[str] = None
+    is_supplier: Optional[bool] = None
+    is_customer: Optional[bool] = None
     vat_identification_number: Optional[str] = None
     chamber_of_commerce_number: Optional[str] = None
     email_addresses: Optional[list[str]] = None
@@ -40,6 +42,8 @@ class Contact:
             city: Optional[str] = None,
             company_name: Optional[str] = None,
             phone_number: Optional[str] = None,
+            is_supplier: Optional[bool] = None,
+            is_customer: Optional[bool] = None,
             vat_identification_number: Optional[str] = None,
             chamber_of_commerce_number: Optional[str] = None,
             email_addresses: Optional[list[str]] = None,
@@ -56,6 +60,8 @@ class Contact:
         self.city = city
         self.company_name = company_name
         self.phone_number = phone_number
+        self.is_supplier = is_supplier
+        self.is_customer = is_customer
         self.vat_identification_number = vat_identification_number
         self.chamber_of_commerce_number = chamber_of_commerce_number
         if email_addresses:
