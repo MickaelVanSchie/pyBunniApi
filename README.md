@@ -4,7 +4,7 @@
 
 + You need a Bunni Account.
 + You need to generate an API key for your Bunni Account.
-+ Python 3.10
++ Python 3.10+
 
 ### Installation ###
 ___
@@ -98,20 +98,15 @@ This will return a list with all invoices, the response looks like this:
 ]
 ```
 
-### Creating an invoice PDF ###
+### Building the shared invoice building blocks ###
 ___
-This feature only generates a PDF. Said invoice will not be placed in your bookkeeping
-software as of now.
-You can however write your own piece of code that stores this pdf somewhere on your webserver, and sends it
-to `YOUR_BUSINESS_ID@postbode.bunni.nl` in order to get it automatically placed in your bookkeeping.
-
-Anyways, this part is a little bit more spicy and requires a few more steps.
-Again, this only works if your API key has access to the `WRITE` permissions of Invoice.
+Both creating an invoice PDF and creating a full invoice (see below) start from the same two building blocks:
+a `Row` and a `Contact`. This part only works if your API key has access to the `WRITE` permissions of Invoice.
 
 First, let's start by defining our rows. A row requires four parameters. One invoice can contain varying rows. We append
-these bu putting rows in a list.
+these by putting rows in a list.
 
-To create row we can initialize a `Row()`. The complete syntax would look like this:
+To create a row we can initialize a `Row()`. The complete syntax would look like this:
 
 ```python
 row = PyBunniApi.Row(
@@ -137,20 +132,29 @@ contact = PyBunniApi.Contact(
 )
 ```
 
-Now we can build a complete invoice using `InvoicePDF()` by the following manner:
+With a `row` and `contact` ready, you can move on to either creating an invoice PDF or a full invoice.
+
+### Creating an invoice PDF ###
+___
+This feature only generates a PDF. Said invoice will not be placed in your bookkeeping
+software as of now.
+You can however write your own piece of code that stores this pdf somewhere on your webserver, and sends it
+to `YOUR_BUSINESS_ID@postbode.bunni.nl` in order to get it automatically placed in your bookkeeping.
+
+Using the `row` and `contact` from above, we can build a complete invoice using `InvoicePDF()` in the following manner:
 
 ```python
 invoicePdf = PyBunniApi.InvoicePDF(
     invoice_date='YYYY-MM-DD',
     invoice_number='12345.67',
     tax_mode='excl',  # This can be either `incl` or `excl`,
-    design='INVOICE_DESIGN_ID',  # A little down here I'll explain how you can fetch this ID.
+    design='INVOICE_DESIGN_ID',  # See "Retrieving the list of invoice designs" below for how to fetch this ID.
     contact=contact,  # We made a contact above here.
     rows=[row]
 )
 ```
 
-We now have a initialized `InvoicePdf` object which we can use to create a invoice (pdf) in Bunni.
+We now have an initialized `InvoicePdf` object which we can use to create an invoice (pdf) in Bunni.
 We can do this by using `py_bunni_api.invoices.create_pdf`
 
 A complete snippet of this code would look like this:
@@ -166,65 +170,36 @@ https://restpack.io/cache/pdf/069aba16b0ced81a42ecba6d7fd841885f53dd9bcac71cbbcb
 ```
 
 
-### Creating an invoice###
+### Creating an invoice ###
 ___
 This feature creates an invoice which is placed in your bookkeeping.
 It also allows you to fetch the invoice PDF.
 
-First, let's start by defining our rows. A row requires four parameters. One invoice can contain varying rows. We append
-these bu putting rows in a list.
-
-To create row we can initialize a `Row()`. The complete syntax would look like this:
+Using the same `row` and `contact` from above, we can build a complete invoice using `Invoice()` in the following manner:
 
 ```python
-row = PyBunniApi.Row(
-    unit_price=12.5,  # This should be a float.
-    description="This is a test description",
-    quantity=5,
-    tax="NL_High_21",  # This should be a string.
-)
-```
-
-For explaining how this works, one row will be enough. The next step is to create a `Contact()` This can be done like
-this:
-
-```python
-contact = PyBunniApi.Contact(
-    company_name="The Carrot Company",
-    attn='Jim Carrot',
-    street='Carrot Street',
-    street_number=20,
-    postal_code='1122AB',
-    city='Bunny Town',
-    phone_number='123456789',
-)
-```
-
-Now we can build a complete invoice using `InvoicePDF()` by the following manner:
-
-```python
-invoicePdf = PyBunniApi.Invoice(
+invoice = PyBunniApi.Invoice(
     external_id='Your own ID',
     invoice_date='YYYY-MM-DD',
     invoice_number='12345.67',
     tax_mode='excl',  # This can be either `incl` or `excl`,
-    design='INVOICE_DESIGN_ID',  # A little down here I'll explain how you can fetch this ID.
+    design='INVOICE_DESIGN_ID',  # See "Retrieving the list of invoice designs" below for how to fetch this ID.
     contact=contact,  # We made a contact above here.
     rows=[row]
 )
 ```
 
-We now have a initialized `Invoice` object which we can use to create a invoice in Bunni.
+We now have an initialized `Invoice` object which we can use to create an invoice in Bunni.
 We can do this by using `py_bunni_api.invoices.create_or_update`
 
 A complete snippet of this code would look like this:
 
 ```python
-invoice_pdf = py_bunni_api.invoices.create_or_update(invoice)
+py_bunni_api.invoices.create_or_update(invoice)
 ```
 This function will not return anything if your invoice object is all good. Otherwise it returns the error received from bunni.
 
-### Retreiving the list of invoice designs ###
+### Retrieving the list of invoice designs ###
 ___
 For retrieving a list of invoice designs you can use `invoice_designs.list`
 A complete snippet of this code would look like this:
@@ -235,17 +210,17 @@ invoice_designs = py_bunni_api.invoice_designs.list()
 
 The variable `invoice_designs` now looks like this:
 
-```json
+```python
 [
   {
-    id: "de_10XXX",
-    name: "invoice THE CARROT COMPANY",
-    createdOn: "2023-08-09T18:22:15.21Z"
+    "id": "de_10XXX",
+    "name": "invoice THE CARROT COMPANY",
+    "createdOn": "2023-08-09T18:22:15.21Z"
   },
   {
-    id: "de_10XXX",
-    name: "New Design",
-    createdOn: "2023-08-09T16:45:21.32Z"
+    "id": "de_10XXX",
+    "name": "New Design",
+    "createdOn": "2023-08-09T16:45:21.32Z"
   }
 ]
 ```
@@ -259,20 +234,20 @@ A complete snippet looks like this:
 projects = py_bunni_api.projects.list()
 ```
 
-The variable `projects` should now contain a JSON structure like this:
+The variable `projects` should now contain a structure like this:
 
-```json
+```python
 [
   {
-    id: "pr_17413",
-    color: "#eeeeee",
-    name: "Project auto voor Danny",
-    externalId: "1100"
+    "id": "pr_17413",
+    "color": "#eeeeee",
+    "name": "Project auto voor Danny",
+    "externalId": "1100"
   }
 ]
 ```
 
-### Retieving a list of time ###
+### Retrieving a list of time ###
 ___
 For retrieving a list of time objects we can use `time.list`. A complete snippet would look like this:
 
@@ -280,24 +255,24 @@ For retrieving a list of time objects we can use `time.list`. A complete snippet
 time_list = py_bunni_api.time.list()
 ```
 
-As a result of this piece of code time_list should contain an object which looks alot like this:
+As a result of this piece of code time_list should contain an object which looks a lot like this:
 
-```json
+```python
 [
   {
-    id: "ti_29XXXX",
-    date: "2023-08-10",
-    duration: {
-      m: 3,
-      h: 5
+    "id": "ti_29XXXX",
+    "date": "2023-08-10",
+    "duration": {
+      "m": 3,
+      "h": 5
     },
-    project: {
-      id: "pr_17XXX",
-      color: "#123456",
-      name: "Project name",
-      externalId: "XXX"
+    "project": {
+      "id": "pr_17XXX",
+      "color": "#123456",
+      "name": "Project name",
+      "externalId": "XXX"
     },
-    description: "Time description"
+    "description": "Time description"
   }
 ]
 ```
@@ -342,6 +317,117 @@ Now that we have created all key elements we can submit it to Bunni in the follo
 py_bunni_api.time.create_or_update(time)
 ```
 
+### Retrieving a list of bank accounts ###
+___
+For retrieving a list of bank accounts we can use `bank_accounts.list`.
+A complete snippet looks like this:
+
+```python
+bank_accounts = py_bunni_api.bank_accounts.list()
+```
+
+The variable `bank_accounts` should now contain a structure like this:
+
+```python
+[
+  {
+    "id": "ba_XXXXX",
+    "type": {
+      "name": "iban"
+    },
+    "name": "My bank account",
+    "accountNumber": "NL00BANK0123456789"
+  }
+]
+```
+
+### Retrieving a list of categories ###
+___
+For retrieving a list of categories we can use `categories.list`.
+A complete snippet looks like this:
+
+```python
+categories = py_bunni_api.categories.list()
+```
+
+The variable `categories` should now contain a structure like this:
+
+```python
+[
+  {
+    "id": "ca_XXXXX",
+    "name": "Office supplies",
+    "color": "#eeeeee",
+    "ledgerNumber": "4100"
+  }
+]
+```
+
+### Retrieving a list of tax rates ###
+___
+For retrieving a list of tax rates we can use `tax_rates.list`.
+A complete snippet looks like this:
+
+```python
+tax_rates = py_bunni_api.tax_rates.list()
+```
+
+The variable `tax_rates` should now contain a structure like this:
+
+```python
+[
+  {
+    "idName": "NL_High_21",
+    "name": "21% NL",
+    "percentage": 21.0,
+    "diverted": False,
+    "active": True,
+    "activeFrom": "2019-01-01",
+    "activeTo": None
+  }
+]
+```
+
+### Retrieving a list of transactions ###
+___
+For retrieving a list of transactions we can use `transactions.list`.
+A complete snippet looks like this:
+
+```python
+transactions = py_bunni_api.transactions.list()
+```
+
+The variable `transactions` should now contain a structure like this:
+
+```python
+[
+  {
+    "id": "tr_XXXXX",
+    "bankAccountId": "ba_XXXXX",
+    "date": "2023-08-10",
+    "accountNumber": "NL00BANK0123456789",
+    "amount": 100.0,
+    "description": "Transaction description"
+  }
+]
+```
+
+### Errors ###
+___
+When Bunni rejects a request (for example, missing permissions or invalid data), pyBunniApi raises a
+`BunniApiException` containing the error(s) returned by Bunni. If the client itself isn't configured correctly
+(missing API key or business ID), a `BunniApiSetupException` is raised instead.
+
+```python
+from pyBunniApi.error import BunniApiException, BunniApiSetupException
+
+try:
+    py_bunni_api.invoices.create_or_update(invoice)
+except BunniApiException as e:
+    print(f"Bunni rejected the request: {e}")
+except BunniApiSetupException as e:
+    print(f"The client isn't configured correctly: {e}")
+```
 
 ### A little footnote ###
 ___

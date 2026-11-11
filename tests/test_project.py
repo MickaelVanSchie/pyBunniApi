@@ -25,3 +25,13 @@ def test_initiate_project_model(project: Project):
     assert project.color == '#FFFFFF'
     assert project.id == '1'
     assert project.name == 'Test project'
+
+
+def test_project_as_dict(project: dict):
+    proj = Project(**project)
+    assert proj.as_dict() == {
+        "id": "1",
+        "color": "#FFFFFF",
+        "name": "Test project",
+        "externalId": None,
+    }

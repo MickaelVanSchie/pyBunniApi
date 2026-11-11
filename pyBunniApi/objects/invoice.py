@@ -13,15 +13,16 @@ class Invoice:
     invoice_date: str
     invoice_number: str
     rows: list[Row]
-    is_finalized: Optional[bool]
     outstanding_balance: float
-    due_period_days: Optional[int]
-    pdf_url: Optional[str]
+    is_finalized: Optional[bool] = None
+    due_period_days: Optional[int] = None
+    pdf_url: Optional[str] = None
     id: Optional[str] = None
     tax_mode: Optional[str] = None
     design: Optional[InvoiceDesign] = None
     external_id: Optional[str] = None
     contact: Optional[Contact] = None
+    outstanding_balance: Optional[int] = None
 
     def __init__(
             self,
@@ -29,7 +30,7 @@ class Invoice:
             invoice_number: Optional[str] = None,
             rows: Optional[list[Row]] = None,
             is_finalized: Optional[bool] = None,
-            outstanding_balance: float = None,
+            outstanding_balance: Optional[float] = None,
             due_period_days: Optional[int] = None,
             pdf_url: Optional[str] = None,
             id: Optional[str] = None,
@@ -59,9 +60,10 @@ class Invoice:
             "externalId": self.external_id,
             "invoiceDate": self.invoice_date,
             "invoiceNumber": self.invoice_number,
+            "outstandingBalance": self.outstanding_balance,
             "taxMode": self.tax_mode,
             "design": self.design.as_dict() if self.design else None,
-            "contact": self.contact.as_dict() if self.contact else None,
+            "referencedContact": self.contact.as_dict() if self.contact else None,
             "rows": [r.as_dict() for r in self.rows],
         }
 

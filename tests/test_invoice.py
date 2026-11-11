@@ -55,6 +55,26 @@ def test_quotation_list_typed(invoice: Invoice, testClient: Client):
     assert not resp[0].is_finalized
 
 
+def test_invoice_create_pdf(invoice: dict, testClient: Client):
+    testClient.create_http_request.return_value = {"pdf": {"url": "https://example.com/test.pdf"}}
+    invoice_obj = Invoice(**invoice)
+    resp = testClient.invoices.create_pdf(invoice_obj)
+    assert resp == "https://example.com/test.pdf"
+    testClient.create_http_request.assert_called_once_with(
+        "invoices/create-pdf", data=invoice_obj.as_json(), method="POST"
+    )
+
+
+def test_invoice_create_or_update(invoice: dict, testClient: Client):
+    testClient.create_http_request.return_value = None
+    invoice_obj = Invoice(**invoice)
+    resp = testClient.invoices.create_or_update(invoice_obj)
+    assert resp is None
+    testClient.create_http_request.assert_called_once_with(
+        "invoices/create-or-update", data=invoice_obj.as_json(), method="POST"
+    )
+
+
 def test_get_next_invoice_number(invoice: dict, testClient: Client):
     invoice_2 = invoice
     invoice_3 = invoice

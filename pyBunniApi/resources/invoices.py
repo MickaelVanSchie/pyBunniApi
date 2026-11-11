@@ -1,14 +1,12 @@
-from typing import Any, TYPE_CHECKING, List
+from typing import Any, List
 
 from ..objects.invoice import Invoice
-
-if TYPE_CHECKING:
-    from pyBunniApi.client import Client
+from .base import BaseListResource
 
 
-class Invoices:
-    def __init__(self, bunni_api: "Client"):
-        self.bunni_api = bunni_api
+class Invoices(BaseListResource[Invoice]):
+    endpoint = 'invoices'
+    model = Invoice
 
     def create_pdf(self, invoice: Invoice) -> None:
         return self.bunni_api.create_http_request(
@@ -20,18 +18,11 @@ class Invoices:
             "invoices/create-or-update", data=invoice.as_json(), method="POST"
         )
 
-    def untyped_list(self) -> List[dict[str, Any]]:
-        return self.bunni_api.create_http_request("invoices/list")["items"]
-
-    def typed_list(self) -> List[Invoice]:
-        return [Invoice(**invoice) for invoice in self.untyped_list()]
-
     def next_invoice_number(self) -> int:
         """
         This function unfortunately only works if your invoice numbers are integers. I still need to figure out a neat
         way to get this working with more complex invoice number formats.
         """
-        ...
         invoices = self.typed_list()
         invoices.sort(key=lambda invoice: invoice.invoice_number, reverse=True)
         return int(invoices[0].invoice_number) + 1
@@ -41,9 +32,7 @@ class Invoices:
             if finalized:
                 return self.finalized_list()
             return self.quotation_list()
-        if self.bunni_api.TYPED:
-            return self.typed_list()
-        return self.untyped_list()
+        return super().list()
 
     def finalized_list(self) -> List[dict[str, Any]] | List[Invoice]:
         if self.bunni_api.TYPED:

@@ -6,3 +6,4 @@ from .invoices import *
 from .projects import *
 from .time import *
 from .tax_rates import *
+from .transactions import *

@@ -27,7 +27,7 @@ class Category:
             self.name = name
         if color:
             self.color = color
-        if color:
+        if ledger_number:
             self.ledger_number = ledger_number
 
         # For init via Bunni
